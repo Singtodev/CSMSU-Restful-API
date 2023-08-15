@@ -29,6 +29,25 @@
             return $employees;
         }
 
+        public function getEmployeeByEmail($email){
+            $sql = "SELECT * FROM employees WHERE email = ? ";
+            $result = $this->db->prepare($sql);
+            $result->bind_param('s',$email);
+            $result->execute();
+            $result = $result->get_result();
+
+            $employees = array();
+
+            if($result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                    array_push($employees,$row);
+                }
+
+            }
+
+            return $employees;
+        }
+
 
         public function getAllEmployees(){
             $sql = "SELECT * FROM employees";

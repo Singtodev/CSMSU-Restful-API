@@ -3,6 +3,8 @@
 
     namespace Service;
 
+    use Service\EmployeeService;
+
     class Authentication {
         
 
@@ -41,20 +43,40 @@
             // Placeholder implementation for login, update as needed
         }
 
-        public function register() {
 
-
-                // $options = [
-                //     'cost' => 10
-                // ];
-                
-                // return password_hash($data['password'], PASSWORD_BCRYPT, $options);
-
-            // Placeholder implementation for registration, update as needed
-        }
-
-        public function forgotPassword() {
+        public function forgotPassword($data) {
             // Placeholder implementation for forgot password, update as needed
+
+            try{
+                $emp_srv = new EmployeeService($this->db);
+
+                $customerAlready = $emp_srv->getEmployeeByEmail($data['email']);
+    
+                if(!$customerAlready) return 'Not found Employee !';
+    
+                // decode hash password
+                $verifyPassword = password_verify($data['password'],$customerAlready[0]['password']);
+    
+                // check password is current 
+                if($verifyPassword){
+                    return 'Your password matches the current one.';
+                } 
+    
+                
+                // change password
+                $id = $customerAlready[0]['employeeNumber'];
+                $customerAlready[0]['password'] = $data['password'];
+                
+    
+                $result = $emp_srv->updateEmployeeById($id , $customerAlready[0]);
+                
+                
+                return $result == 'Update Employee Success' ? 'Update New Password Success' : 'Update Password Failed.!';
+            }catch(Exception $e){
+                return 'Something went wrong please try again';
+            }
+
+
         }
     }
 ?>

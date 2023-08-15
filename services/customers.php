@@ -119,7 +119,21 @@
 
         public function insertCustomer($data){
             try {
-                $sql = "INSERT INTO customers(customerNumber,customerName,contactLastName,contactFirstName,phone,addressLine1,addressLine2,city,state,postalCode,country,salesRepEmployeeNumber,creditLimit) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                $sql = "INSERT INTO customers(
+                        customerNumber,
+                        customerName,
+                        contactLastName,
+                        contactFirstName,
+                        phone,
+                        addressLine1,
+                        addressLine2,
+                        city,
+                        state,
+                        postalCode,
+                        country,
+                        salesRepEmployeeNumber,
+                        creditLimit
+                    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 $stmt = $this->db->prepare($sql);
                 $stmt->bind_param(
                     'issssssssssid',

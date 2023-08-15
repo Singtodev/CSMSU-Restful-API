@@ -79,19 +79,16 @@ $app->post('/login', function (Request $request, Response $response, $args) {
 
 });
 
-$app->get('/register', function (Request $request, Response $response, $args) {
-    try{
-        $response->getBody()->write(json_encode(['message' => "Register 😁😁🫣!" , 'status'=> 200]));
-        return $response
-        ->withStatus(200)    
-        ->withHeader('Content-type', 'application/json');
-    }catch(err){
-        echo $err;
-    }
-});
 
-$app->get('/forgot_password', function (Request $request, Response $response, $args) {
-    $response->getBody()->write(json_encode(['message' => "Register 😁😁🫣!" , 'status'=> 200]));
+$app->post('/forgot_password', function (Request $request, Response $response, $args) {
+    $body = $request->getBody();
+    $bodyArray = json_decode($body, true);
+    $auth = new Authentication($GLOBALS['conn']);
+    $result = $auth->forgotPassword($bodyArray);
+    $response->getBody()->write(json_encode([
+        'message' => "Forgot Password 😁😁🫣!" ,
+        'result' => $result,
+        'status'=> 200]));
     return $response
     ->withStatus(200)    
     ->withHeader('Content-type', 'application/json');
