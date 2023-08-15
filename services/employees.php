@@ -13,7 +13,7 @@
         public function getEmployeeById($id){
             $sql = "SELECT * FROM employees WHERE employeeNumber = ? ";
             $result = $this->db->prepare($sql);
-            $result->bind_param('s',$id);
+            $result->bind_param('i',$id);
             $result->execute();
             $result = $result->get_result();
 
