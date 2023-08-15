@@ -50,25 +50,35 @@
             try{
                 $emp_srv = new EmployeeService($this->db);
 
+
+                if(!$data['new_password'] || !$data['old_password']) return 'Required new_password and old_password';
+
                 $customerAlready = $emp_srv->getEmployeeByEmail($data['email']);
     
                 if(!$customerAlready) return 'Not found Employee !';
     
                 // decode hash password
-                $verifyPassword = password_verify($data['password'],$customerAlready[0]['password']);
+                $verifyPassword = password_verify($data['old_password'],$customerAlready[0]['password']);
     
                 // check password is current 
-                if($verifyPassword){
-                    return 'Your password matches the current one.';
-                } 
+                if($verifyPassword){ 
+
+
+                    if($data['new_password'] == $data['old_password']) return 'Your password matches the current one.';
+
+                    // change password
+                    $id = $customerAlready[0]['employeeNumber'];
+                    $customerAlready[0]['password'] = $data['new_password'];
+                    $result = $emp_srv->updateEmployeeById($id , $customerAlready[0]);
     
+
+
+                }else{
+                    return 'Password old is wrong';
+                }
+
                 
-                // change password
-                $id = $customerAlready[0]['employeeNumber'];
-                $customerAlready[0]['password'] = $data['password'];
-                
-    
-                $result = $emp_srv->updateEmployeeById($id , $customerAlready[0]);
+
                 
                 
                 return $result == 'Update Employee Success' ? 'Update New Password Success' : 'Update Password Failed.!';
