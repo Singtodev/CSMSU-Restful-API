@@ -64,7 +64,7 @@ $app->delete('/customer', function (Request $request, Response $response, $args)
     $cos_srv = new CustomerService($GLOBALS['conn']);
     $result = $cos_srv->deleteCustomerById($bodyArray);
     $response->getBody()->write(json_encode([
-        'message' => "Delete Employee 😁😁🫣!" , 
+        'message' => "Delete Customer 😁😁🫣!" , 
         'result' => $result,
         'status'=> 200]));
     return $response
@@ -78,7 +78,7 @@ $app->post('/customer', function (Request $request, Response $response, $args) {
     $cos_srv = new CustomerService($GLOBALS['conn']);
     $result = $cos_srv->insertCustomer($bodyArray);
     $response->getBody()->write(json_encode([
-        'message' => "Insert Employee 😁😁🫣!" , 
+        'message' => "Insert Customer 😁😁🫣!" , 
         'result' => $result,
         'status'=> 200]));
     return $response
